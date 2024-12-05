@@ -47,4 +47,28 @@ public class Tienda extends JFrame {
 
         add(logoLabel);
     }
+
+    private JButton crearBotonConEfectos(String texto, Color fondo, Color textoColor, Color colorHover, Color colorPresionado) {
+        JButton boton = new JButton(texto);
+        boton.setBackground(fondo);
+        boton.setForeground(textoColor);
+        boton.setFont(new Font("Arial", Font.BOLD, 16));
+        boton.setFocusPainted(false);
+        boton.setBorder(new LineBorder(Color.green, 2, true));
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // ChangeListener para modificar colores según el estado del boton
+        boton.getModel().addChangeListener(e -> {
+            if (boton.getModel().isPressed()) {
+                boton.setBackground(colorPresionado); // Cambiar color al presionar
+            } else if (boton.getModel().isRollover()) {
+                boton.setBackground(colorHover); // Cambiar color al pasar el ratón
+            } else {
+                boton.setBackground(fondo); // Restaurar color original
+            }
+        });
+
+        return boton;
+    }
+
 }
