@@ -200,23 +200,26 @@ public class Usuarios extends JFrame {
         return perfilLabel;
     }
 
-    // Método para obtener el historial de compras de un usuario
+
     private String obtenerHistorialCompras(int userId) {
         String historial = "No se encontró historial de compras.";
-        String query = "SELECT producto_id FROM historial_compras WHERE usuario_id = ?";
+        String query = "SELECT p.nombre "
+                + "FROM historial_compras h "
+                + "JOIN productos p ON h.producto_id = p.id "
+                + "WHERE h.usuario_id = ?";
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, userId);  // Establece el ID de usuario para la consulta
+            stmt.setInt(1, userId);  // Establece el ID del usuario
 
             try (ResultSet rs = stmt.executeQuery()) {
                 StringBuilder sb = new StringBuilder();
                 while (rs.next()) {
-                    // Cambié "compra" por "producto_id" ya que esa es la columna que mencionas
-                    sb.append("Producto ID: ").append(rs.getString("producto_id")).append("\n");
+                    // Obtener el nombre del producto
+                    sb.append("Producto: ").append(rs.getString("nombre")).append("\n");
                 }
-                // Si hay resultados, los muestra, si no, permanece el mensaje predeterminado
+                // Si se encuentra algún producto, lo muestra, si no, deja el mensaje predeterminado
                 historial = sb.length() > 0 ? sb.toString() : historial;
             }
         } catch (SQLException e) {
@@ -227,10 +230,7 @@ public class Usuarios extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Usuarios usuariosFrame = new Usuarios();
-            usuariosFrame.setVisible(true);
-        });
-    }
+
+
+
 }
