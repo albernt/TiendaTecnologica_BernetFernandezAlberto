@@ -221,6 +221,8 @@ public class Main {
                 }
             }
 
+
+
             conn.commit(); // Confirmar transacción
             System.out.println("Datos insertados correctamente desde el archivo JSON.");
         } catch (IOException | ParseException e) {
@@ -229,5 +231,4 @@ public class Main {
             System.out.println("Error al insertar datos en la base de datos: " + e.getMessage());
         }
     }
-
 }

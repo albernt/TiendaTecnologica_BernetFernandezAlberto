@@ -5,6 +5,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class Categorias extends JFrame {
 
@@ -21,7 +22,6 @@ public class Categorias extends JFrame {
         setResizable(false);
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null);
-
 
         // Logo de la tienda
         JLabel logoLabel = new JLabel();
@@ -64,7 +64,6 @@ public class Categorias extends JFrame {
                 Color.LIGHT_GRAY  // Color al presionar
         );
         productosButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20), 20, buttonWidth, buttonHeight);
-
         add(productosButton);
 
         JButton usuariosButton = crearBotonConEfectos(
@@ -83,7 +82,6 @@ public class Categorias extends JFrame {
         homeIcon = new ImageIcon(scaledHomeImage);
 
         JButton homeButton = new JButton(homeIcon);
-
         homeButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20) - 40, 25, 30, 30);
 
         homeButton.setBorder(null);
@@ -103,11 +101,10 @@ public class Categorias extends JFrame {
             }
         });
 
-// Agregar el botón a la ventana
+        // Agregar el botón a la ventana
         add(homeButton);
 
-
-// Footer
+        // Footer
         JPanel footerPanel = new JPanel();
         footerPanel.setBounds(0, windowHeight - 100, windowWidth, 100);
         footerPanel.setBackground(Color.GRAY);
@@ -118,7 +115,8 @@ public class Categorias extends JFrame {
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel);
 
-
+        // Llamar al método para cargar las categorías
+        obtenerCategorias();
 
         // Fuerza la actualización del contenedor principal
         revalidate();
@@ -149,5 +147,52 @@ public class Categorias extends JFrame {
         return boton;
     }
 
+    // Método para obtener las categorías desde la base de datos y crear los JLabel
+    // Método para obtener las categorías desde la base de datos y crear los JLabel dentro de paneles cuadrados
+    // Método para obtener las categorías desde la base de datos y crear los JLabel dentro de paneles cuadrados
+    private void obtenerCategorias() {
+        String sql = "SELECT nombre FROM categorias";  // Asegúrate de que la tabla 'categorias' existe
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Panel contenedor para las categorías
+            JPanel contenedorCategorias = new JPanel();
+            contenedorCategorias.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // Alineación centrada y espaciado entre los paneles
+            contenedorCategorias.setBackground(Color.BLACK); // Fondo negro para el contenedor
+
+            // Recorrer los resultados y crear los cuadrados para cada categoría
+            while (rs.next()) {
+                String categoriaNombre = rs.getString("nombre");
+
+                // Crear un JPanel para cada categoría con borde blanco y forma cuadrada
+                JPanel categoriaPanel = new JPanel();
+                categoriaPanel.setBackground(Color.BLACK);
+                categoriaPanel.setBorder(new LineBorder(Color.WHITE, 2)); // Borde blanco
+                categoriaPanel.setLayout(new BorderLayout()); // Usamos BorderLayout para centrar el texto
+
+                // Crear un JLabel con el nombre de la categoría
+                JLabel categoriaLabel = new JLabel(categoriaNombre, SwingConstants.CENTER);
+                categoriaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+                categoriaLabel.setForeground(Color.WHITE);
+
+                categoriaPanel.add(categoriaLabel, BorderLayout.CENTER); // Centrar el texto en el panel
+
+                // Establecer tamaño cuadrado para cada panel
+                categoriaPanel.setPreferredSize(new Dimension(150, 150)); // Tamaño cuadrado de 150x150 píxeles
+
+                // Agregar el panel de la categoría al contenedor
+                contenedorCategorias.add(categoriaPanel);
+            }
+
+            // Agregar el contenedor de categorías al JFrame
+            JScrollPane scrollPane = new JScrollPane(contenedorCategorias);
+            scrollPane.setBounds(0, 250, getWidth(), getHeight() - 350); // Ajustar el tamaño y posición del contenedor
+            add(scrollPane);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
