@@ -1,0 +1,171 @@
+{
+  "tienda": {
+    "nombre": "Mi Tienda Online",
+    "categorias": [
+      {
+        "id": 1,
+        "nombre": "Electrónica",
+        "productos": [
+          {
+            "id": 101,
+            "nombre": "Smartphone",
+            "precio": 999.99,
+            "descripcion": "El último smartphone del mercado.",
+            "caracteristicas": {
+              "pantalla": "6.5 pulgadas",
+              "camara": "48 MP",
+              "bateria": "4500 mAh"
+            },
+            "imagenes": ["imagen1.jpg", "imagen2.jpg"],
+            "inventario": 10
+          },
+          {
+            "id": 102,
+            "nombre": "Laptop",
+            "precio": 1200.50,
+            "descripcion": "Laptop ultradelgado con gran rendimiento.",
+            "caracteristicas": {
+              "pantalla": "15.6 pulgadas",
+              "procesador": "Intel Core i7",
+              "ram": "16 GB"
+            },
+            "imagenes": ["laptop1.jpg", "laptop2.jpg"],
+            "inventario": 5
+          },
+          {
+            "id": 103,
+            "nombre": "Auriculares Bluetooth",
+            "precio": 199.99,
+            "descripcion": "Auriculares inalámbricos con cancelación de ruido.",
+            "caracteristicas": {
+              "bateria": "30 horas",
+              "conexion": "Bluetooth 5.0",
+              "peso": "250g"
+            },
+            "imagenes": ["auriculares1.jpg", "auriculares2.jpg"],
+            "inventario": 20
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "Videojuegos",
+        "productos": [
+          {
+            "id": 201,
+            "nombre": "PlayStation 5",
+            "precio": 499.99,
+            "descripcion": "La última consola de Sony con gráficos impresionantes y velocidad increíble.",
+            "caracteristicas": {
+              "almacenamiento": "825 GB SSD",
+              "resolucion": "4K",
+              "control": "DualSense"
+            },
+            "imagenes": ["ps5_1.jpg", "ps5_2.jpg"],
+            "inventario": 15
+          },
+          {
+            "id": 202,
+            "nombre": "Xbox Series X",
+            "precio": 499.99,
+            "descripcion": "La nueva generación de consolas de Microsoft con una potencia sin igual.",
+            "caracteristicas": {
+              "almacenamiento": "1 TB SSD",
+              "resolucion": "4K",
+              "control": "Xbox Wireless Controller"
+            },
+            "imagenes": ["xbox_1.jpg", "xbox_2.jpg"],
+            "inventario": 20
+          },
+          {
+            "id": 203,
+            "nombre": "The Legend of Zelda: Tears of the Kingdom (Switch)",
+            "precio": 59.99,
+            "descripcion": "La nueva aventura épica de Zelda en la consola Nintendo Switch.",
+            "caracteristicas": {
+              "plataforma": "Nintendo Switch",
+              "genero": "Aventura, Acción",
+              "modo": "Un jugador"
+            },
+            "imagenes": ["zelda1.jpg", "zelda2.jpg"],
+            "inventario": 50
+          },
+          {
+            "id": 204,
+            "nombre": "God of War Ragnarök",
+            "precio": 59.99,
+            "descripcion": "La continuación de la saga de Kratos y Atreus en su lucha contra los dioses.",
+            "caracteristicas": {
+              "plataforma": "PlayStation 5, PlayStation 4",
+              "genero": "Acción, Aventura",
+              "modo": "Un jugador"
+            },
+            "imagenes": ["godofwar1.jpg", "godofwar2.jpg"],
+            "inventario": 30
+          },
+          {
+            "id": 205,
+            "nombre": "Call of Duty: Modern Warfare II",
+            "precio": 59.99,
+            "descripcion": "El regreso del legendario shooter en primera persona.",
+            "caracteristicas": {
+              "plataforma": "PlayStation 5, Xbox Series X, PC",
+              "genero": "Shooter, Acción",
+              "modo": "Multijugador, Un jugador"
+            },
+            "imagenes": ["codmw2_1.jpg", "codmw2_2.jpg"],
+            "inventario": 25
+          }
+        ]
+      }
+    ],
+    "usuarios": [
+      {
+        "id": 1,
+        "nombre": "Juan Pérez",
+        "email": "juanperez@example.com",
+        "direccion": {
+          "calle": "Calle Principal",
+          "numero": 123,
+          "ciudad": "Madrid",
+          "pais": "España"
+        },
+        "historialCompras": [
+          {
+            "productoId": 101,
+            "cantidad": 2,
+            "fecha": "2023-11-14"
+          },
+          {
+            "productoId": 102,
+            "cantidad": 1,
+            "fecha": "2023-11-20"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "María González",
+        "email": "mariagonzalez@example.com",
+        "direccion": {
+          "calle": "Avenida del Sol",
+          "numero": 456,
+          "ciudad": "Barcelona",
+          "pais": "España"
+        },
+        "historialCompras": [
+          {
+            "productoId": 201,
+            "cantidad": 3,
+            "fecha": "2023-11-15"
+          },
+          {
+            "productoId": 103,
+            "cantidad": 1,
+            "fecha": "2023-11-18"
+          }
+        ]
+      }
+    ]
+  }
+}
