@@ -20,6 +20,8 @@ public class Categorias extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setBackground(Color.BLACK);
+        setLocationRelativeTo(null);
+
 
         // Logo de la tienda
         JLabel logoLabel = new JLabel();
@@ -74,6 +76,36 @@ public class Categorias extends JFrame {
         );
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
         add(usuariosButton);
+
+        ImageIcon homeIcon = new ImageIcon(getClass().getResource("/tienda/home.png"));
+
+        Image scaledHomeImage = homeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Tamaño más pequeño
+        homeIcon = new ImageIcon(scaledHomeImage);
+
+        JButton homeButton = new JButton(homeIcon);
+
+        homeButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20) - 40, 25, 30, 30);
+
+        homeButton.setBorder(null);
+        homeButton.setContentAreaFilled(false);
+        homeButton.setFocusPainted(false);
+        homeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Aquí debes agregar la acción para volver a la tienda
+                // Suponiendo que la tienda sea otra ventana (JFrame)
+                // Si ya tienes una instancia de la tienda, simplemente hazla visible
+                Tienda tienda = new Tienda();  // Crea una nueva instancia de la tienda
+                tienda.setVisible(true); // Mostrar la ventana Tienda
+                dispose(); // Cerrar la ventana actual
+            }
+        });
+
+// Agregar el botón a la ventana
+        add(homeButton);
+
 
 // Footer
         JPanel footerPanel = new JPanel();

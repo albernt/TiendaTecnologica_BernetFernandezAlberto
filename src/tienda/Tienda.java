@@ -20,6 +20,7 @@ public class Tienda extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setBackground(Color.BLACK);
+        setLocationRelativeTo(null);
 
         // Logo de la tienda
         JLabel logoLabel = new JLabel();
