@@ -90,6 +90,54 @@ public class Tienda extends JFrame {
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
         add(usuariosButton);
 
+        // Banner
+        JLabel bannerLabel = new JLabel();
+        bannerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+
+
+
+        // Bordeado del banner: solo arriba e izquierda
+        bannerLabel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(5, 5, 0, 0, Color.decode("#FFFFFF")), // Borde solo arriba e izquierda
+                BorderFactory.createEmptyBorder(10, 10, 10, 10) // Márgenes internos opcionales
+        ));
+
+
+
+
+
+        // Cargar la imagen del banner
+        ImageIcon bannerIcon = null;
+        try {
+            bannerIcon = new ImageIcon(getClass().getResource("/tienda/Banner.png"));
+            int originalWidth = bannerIcon.getIconWidth();
+            int originalHeight = bannerIcon.getIconHeight();
+
+            // Calcular la nueva altura manteniendo la proporción
+            int newHeight = (int) ((double) windowWidth / originalWidth * originalHeight);
+
+            // Escalar la imagen
+            Image scaledImage = bannerIcon.getImage().getScaledInstance(windowWidth, newHeight, Image.SCALE_SMOOTH);
+            bannerIcon = new ImageIcon(scaledImage);
+
+            // Posicionar el banner justo encima del footer
+            bannerLabel.setBounds(0, windowHeight - newHeight - 100, windowWidth, newHeight);
+        } catch (NullPointerException e) {
+            System.err.println("No se pudo cargar el banner. Verifica la ruta y la ubicación del archivo.");
+        }
+
+        if (bannerIcon != null) {
+            bannerLabel.setIcon(bannerIcon);
+        } else {
+            bannerLabel.setText("Banner no encontrado");
+            bannerLabel.setForeground(Color.RED);
+        }
+
+        bannerLabel.setBackground(Color.BLACK);
+        bannerLabel.setOpaque(true);
+        add(bannerLabel);
+
         // Footer
         JPanel footerPanel = new JPanel();
         footerPanel.setBounds(0, windowHeight - 100, windowWidth, 100);
