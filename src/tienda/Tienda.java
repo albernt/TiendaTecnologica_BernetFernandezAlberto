@@ -3,6 +3,8 @@ package tienda;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Tienda extends JFrame {
 
@@ -46,6 +48,47 @@ public class Tienda extends JFrame {
         logoLabel.setBorder(new LineBorder(Color.white, 5, true));
 
         add(logoLabel);
+
+        // Botones estilizados
+        int buttonWidth = 150;
+        int buttonHeight = 40;
+        int buttonSpacing = 10;
+
+        JButton productosButton = crearBotonConEfectos(
+                "Productos",
+                Color.DARK_GRAY,
+                Color.WHITE,
+                Color.LIGHT_GRAY, // Color al pasar el ratón
+                Color.LIGHT_GRAY  // Color al presionar
+        );
+        productosButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20), 20, buttonWidth, buttonHeight);
+        // Acción para el botón Productos
+        productosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Categorias categoriasFrame = new Categorias();
+
+
+                categoriasFrame.setVisible(true);
+
+
+                Tienda.this.dispose();
+            }
+        });
+
+
+        add(productosButton);
+
+        JButton usuariosButton = crearBotonConEfectos(
+                "Usuarios",
+                Color.DARK_GRAY,
+                Color.WHITE,
+                Color.LIGHT_GRAY,
+                Color.LIGHT_GRAY
+        );
+        usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
+        add(usuariosButton);
     }
 
     private JButton crearBotonConEfectos(String texto, Color fondo, Color textoColor, Color colorHover, Color colorPresionado) {
@@ -70,5 +113,7 @@ public class Tienda extends JFrame {
 
         return boton;
     }
+
+
 
 }
