@@ -136,14 +136,15 @@ public class Videojuegos extends JFrame {
     // Método para obtener los productos de la categoría "Videojuegos" desde la base de datos
     // Método para obtener los productos de la categoría "Videojuegos" desde la base de datos
     private void obtenerProductos(String categoria) {
-        String sql = "SELECT p.nombre, p.precio FROM productos p "
+        // Cambiar a 'Videojuegos' en lugar de una categoría dinámica, si así lo deseas
+        String sql = "SELECT p.id, p.nombre, p.precio FROM productos p "
                 + "JOIN categorias c ON p.categoria_id = c.id "
                 + "WHERE c.nombre = ?";
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Asumimos que la categoría es el nombre de la categoría, como "Videojuegos"
-            stmt.setString(1, categoria);
+            // Asumimos que la categoría es "Videojuegos"
+            stmt.setString(1, "Videojuegos");
             ResultSet rs = stmt.executeQuery();
 
             // Panel contenedor para los productos
@@ -156,6 +157,7 @@ public class Videojuegos extends JFrame {
             while (rs.next()) {
                 String nombreProducto = rs.getString("nombre");
                 double precioProducto = rs.getDouble("precio");
+                int idProducto = rs.getInt("id");
 
                 // Crear panel para el producto con fondo blanco y bordes
                 JPanel productoPanel = new JPanel();
@@ -170,6 +172,21 @@ public class Videojuegos extends JFrame {
 
                 productoPanel.add(productoLabel, BorderLayout.CENTER);
 
+                // Botón para añadir al historial de compras
+                JButton compraButton = new JButton("Comprar");
+                compraButton.setBackground(Color.GREEN);
+                compraButton.setForeground(Color.WHITE);
+                compraButton.setFont(new Font("Arial", Font.BOLD, 30));
+                compraButton.setFocusPainted(false);
+                compraButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                // Acción de añadir al historial de compras
+                compraButton.addActionListener(e -> {
+                    añadirAlHistorial(idProducto);
+                });
+
+                productoPanel.add(compraButton, BorderLayout.SOUTH);
+
                 contenedorProductos.add(productoPanel);
             }
 
@@ -178,11 +195,74 @@ public class Videojuegos extends JFrame {
             scrollPane.setBounds(0, 250, getWidth(), getHeight() - 350);
             add(scrollPane);
 
+            // Agregar el MouseWheelListener para hacer que la pantalla baje más rápido
+            scrollPane.addMouseWheelListener(e -> {
+                int scrollAmount = e.getUnitsToScroll();  // Obtener la cantidad de desplazamiento
+                int adjustedAmount = scrollAmount * 3;    // Ajustar la velocidad multiplicando (3 es el factor de velocidad)
+
+                JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+                int newValue = verticalScrollBar.getValue() + adjustedAmount;
+
+                // Asegurarse de que no se salga de los límites
+                int maxValue = verticalScrollBar.getMaximum() - verticalScrollBar.getVisibleAmount();
+                if (newValue < 0) newValue = 0;
+                if (newValue > maxValue) newValue = maxValue;
+
+                verticalScrollBar.setValue(newValue);
+            });
+
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    // Método para añadir al historial de compras
+    private void añadirAlHistorial(int idProducto) {
+        // Mostrar un cuadro de diálogo para que el usuario elija su ID (1 o 2)
+        String[] opciones = {"1", "2"};
+        String idUsuario = (String) JOptionPane.showInputDialog(
+                this,
+                "¿Eres el usuario con ID 1 o 2?",
+                "Selecciona tu ID de usuario",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+        );
+
+        // Si el usuario cancela o no elige una opción, no hacer nada
+        if (idUsuario == null) {
+            return;
+        }
+
+        // Convertir el ID de usuario elegido a entero
+        int usuarioId = Integer.parseInt(idUsuario);
+
+        // Preparar la consulta para añadir al historial de compras
+        String sql = "INSERT INTO historial_compras (producto_id, usuario_id, fecha) VALUES (?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Establecer los parámetros en la consulta
+            stmt.setInt(1, idProducto);
+            stmt.setInt(2, usuarioId);
+            stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+
+            // Ejecutar la actualización
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, "Producto añadido al historial de compras.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al añadir el producto al historial.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al añadir al historial de compras: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
 
 }
