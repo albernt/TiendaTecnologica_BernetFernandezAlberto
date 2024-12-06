@@ -1,0 +1,50 @@
+@startuml
+'title Diagrama de clases para proyecto Tienda
+
+' Declaración de las clases principales
+class Main {
+    +main(String[] args)
+}
+
+class Tienda {
+    +nombre : String
+    +ubicacion : String
+    +productos : List<Categorías>
+
+}
+
+class Electronica {
+    +marca : String
+    +modelo : String
+    +voltaje : int
+
+}
+
+class Videojuegos {
+    +titulo : String
+    +genero : String
+    +plataforma : String
+
+}
+
+class Categorías {
+    +nombre : String
+    +descripcion : String
+}
+
+class Usuarios {
+    +nombre : String
+    +correo : String
+    +carrito : List<Categorías>
+
+}
+
+' Relación entre las clases
+Main --> Tienda
+Tienda "1" --> "*" Categorías
+Categorías <|-- Electronica
+Categorías <|-- Videojuegos
+Tienda --> "*" Usuarios
+Usuarios --> Categorías
+
+@enduml
