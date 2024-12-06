@@ -89,6 +89,23 @@ public class Tienda extends JFrame {
         );
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
         add(usuariosButton);
+
+        // Footer
+        JPanel footerPanel = new JPanel();
+        footerPanel.setBounds(0, windowHeight - 100, windowWidth, 100);
+        footerPanel.setBackground(Color.GRAY);
+        add(footerPanel);
+
+        JLabel footerLabel = new JLabel("© 2024 TECHNOSHOP. Todos los derechos reservados a Ilerna.");
+        footerLabel.setForeground(Color.WHITE);
+        footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        footerPanel.add(footerLabel);
+
+
+
+        // Fuerza la actualización del contenedor principal
+        revalidate();
+        repaint();
     }
 
     private JButton crearBotonConEfectos(String texto, Color fondo, Color textoColor, Color colorHover, Color colorPresionado) {
