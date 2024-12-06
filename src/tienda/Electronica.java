@@ -15,7 +15,7 @@ public class Electronica extends JFrame {
         int windowWidth = 1500;
         int windowHeight = 950;
 
-        // Configuración de la ventana principal
+
         setSize(windowWidth, windowHeight);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,14 +23,14 @@ public class Electronica extends JFrame {
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null);
 
-        // Logo de la tienda
+
         JLabel logoLabel = new JLabel();
         logoLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-        // Cargar la imagen del logo
+
         ImageIcon logoIcon = null;
         try {
-            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png")); // Ruta relativa al paquete
+            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png"));
             Image scaledImage = logoIcon.getImage().getScaledInstance(250, 180, Image.SCALE_SMOOTH);
             logoIcon = new ImageIcon(scaledImage);
         } catch (NullPointerException e) {
@@ -38,7 +38,7 @@ public class Electronica extends JFrame {
         }
 
         if (logoIcon != null) {
-            logoLabel.setIcon(logoIcon); // Asignar el icono al JLabel
+            logoLabel.setIcon(logoIcon);
         } else {
             logoLabel.setText("Logo no encontrado");
             logoLabel.setForeground(Color.RED);
@@ -51,7 +51,7 @@ public class Electronica extends JFrame {
 
         add(logoLabel);
 
-        // Botones estilizados
+        // Botones
         int buttonWidth = 150;
         int buttonHeight = 40;
         int buttonSpacing = 10;
@@ -60,11 +60,11 @@ public class Electronica extends JFrame {
                 "Productos",
                 Color.DARK_GRAY,
                 Color.WHITE,
-                Color.LIGHT_GRAY, // Color al pasar el ratón
-                Color.LIGHT_GRAY  // Color al presionar
+                Color.LIGHT_GRAY,
+                Color.LIGHT_GRAY
         );
         productosButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20), 20, buttonWidth, buttonHeight);
-        // Acción para el botón Productos
+
         productosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,24 +91,24 @@ public class Electronica extends JFrame {
         );
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
 
-// Acción para el botón Usuarios
+
         usuariosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Crear una nueva instancia de la clase Usuarios
+
                 Usuarios usuariosFrame = new Usuarios();
 
-                // Hacerla visible
+
                 usuariosFrame.setVisible(true);
 
-                // Cerrar la ventana actual (la de Tienda)
+
                 Electronica.this.dispose();
             }
         });
 
         add(usuariosButton);
 
-        // Botón home
+
         ImageIcon homeIcon = new ImageIcon(getClass().getResource("/tienda/home.png"));
         Image scaledHomeImage = homeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         homeIcon = new ImageIcon(scaledHomeImage);
@@ -139,15 +139,15 @@ public class Electronica extends JFrame {
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel);
 
-        // Llamar al método para cargar los productos de electrónica
+
         obtenerProductos("Electrónica");
 
-        // Fuerza la actualización del contenedor principal
+
         revalidate();
         repaint();
     }
 
-    // Método para crear botones estilizados
+
     private JButton crearBotonConEfectos(String texto, Color fondo, Color textoColor, Color colorHover, Color colorPresionado) {
         JButton boton = new JButton(texto);
         boton.setBackground(fondo);
@@ -159,19 +159,18 @@ public class Electronica extends JFrame {
 
         boton.getModel().addChangeListener(e -> {
             if (boton.getModel().isPressed()) {
-                boton.setBackground(colorPresionado); // Cambiar color al presionar
+                boton.setBackground(colorPresionado);
             } else if (boton.getModel().isRollover()) {
-                boton.setBackground(colorHover); // Cambiar color al pasar el ratón
+                boton.setBackground(colorHover);
             } else {
-                boton.setBackground(fondo); // Restaurar color original
+                boton.setBackground(fondo);
             }
         });
 
         return boton;
     }
 
-    // Método para obtener los productos de la categoría "Electrónica" desde la base de datos
-    // Método para obtener los productos de la categoría "Electrónica" desde la base de datos
+
     private void obtenerProductos(String categoria) {
         String sql = "SELECT p.id, p.nombre, p.precio FROM productos p "
                 + "JOIN categorias c ON p.categoria_id = c.id "
@@ -179,28 +178,28 @@ public class Electronica extends JFrame {
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Asumimos que la categoría es el nombre de la categoría, como "Electrónica"
+
             stmt.setString(1, categoria);
             ResultSet rs = stmt.executeQuery();
 
-            // Panel contenedor para los productos
+
             JPanel contenedorProductos = new JPanel();
-            contenedorProductos.setLayout(new GridLayout(0, 3, 20, 20)); // Layout con filas automáticas y 3 columnas
+            contenedorProductos.setLayout(new GridLayout(0, 3, 20, 20));
             contenedorProductos.setBackground(Color.BLACK);
             contenedorProductos.setPreferredSize(new Dimension(1200, 800));
 
-            // Recorrer los resultados y crear un panel para cada producto
+
             while (rs.next()) {
                 String nombreProducto = rs.getString("nombre");
                 double precioProducto = rs.getDouble("precio");
                 int idProducto = rs.getInt("id");
 
-                // Crear panel para el producto con fondo blanco y bordes
+
                 JPanel productoPanel = new JPanel();
-                productoPanel.setBackground(Color.WHITE); // Fondo blanco
-                productoPanel.setBorder(new LineBorder(Color.BLACK, 2)); // Borde negro
+                productoPanel.setBackground(Color.WHITE);
+                productoPanel.setBorder(new LineBorder(Color.BLACK, 2));
                 productoPanel.setLayout(new BorderLayout());
-                productoPanel.setPreferredSize(new Dimension(200, 200)); // Hacerlo cuadrado
+                productoPanel.setPreferredSize(new Dimension(200, 200));
 
                 JLabel productoLabel = new JLabel("<html><b>" + nombreProducto + "</b><br/>Precio: $" + precioProducto + "</html>", SwingConstants.CENTER);
                 productoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -208,7 +207,7 @@ public class Electronica extends JFrame {
 
                 productoPanel.add(productoLabel, BorderLayout.CENTER);
 
-                // Botón para añadir al historial de compras
+
                 JButton compraButton = new JButton("Comprar");
                 compraButton.setBackground(Color.GREEN);
                 compraButton.setForeground(Color.WHITE);
@@ -216,7 +215,7 @@ public class Electronica extends JFrame {
                 compraButton.setFocusPainted(false);
                 compraButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-                // Acción de añadir al historial de compras
+
                 compraButton.addActionListener(e -> {
                     añadirAlHistorial(idProducto);
                 });
@@ -226,15 +225,15 @@ public class Electronica extends JFrame {
                 contenedorProductos.add(productoPanel);
             }
 
-            // Crear un JScrollPane para agregar los productos si son muchos
+
             JScrollPane scrollPane = new JScrollPane(contenedorProductos);
             scrollPane.setBounds(0, 250, getWidth(), getHeight() - 350);
             add(scrollPane);
 
-            // Agregar el MouseWheelListener para hacer que la pantalla baje más rápido
+            // Esto de aqui nos sirve para hacer que la pantalla baje mas rapido
             scrollPane.addMouseWheelListener(e -> {
-                int scrollAmount = e.getUnitsToScroll();  // Obtener la cantidad de desplazamiento
-                int adjustedAmount = scrollAmount * 3;    // Ajustar la velocidad multiplicando (3 es el factor de velocidad)
+                int scrollAmount = e.getUnitsToScroll();
+                int adjustedAmount = scrollAmount * 3;    // Ajuste la velocidad multiplicando
 
                 JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
                 int newValue = verticalScrollBar.getValue() + adjustedAmount;
@@ -268,25 +267,25 @@ public class Electronica extends JFrame {
                 opciones[0]
         );
 
-        // Si el usuario cancela o no elige una opción, no hacer nada
+
         if (idUsuario == null) {
             return;
         }
 
-        // Convertir el ID de usuario elegido a entero
+
         int usuarioId = Integer.parseInt(idUsuario);
 
-        // Preparar la consulta para añadir al historial de compras
+
         String sql = "INSERT INTO historial_compras (producto_id, usuario_id, fecha) VALUES (?, ?, ?)";
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Establecer los parámetros en la consulta
+
             stmt.setInt(1, idProducto);
             stmt.setInt(2, usuarioId);
             stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 
-            // Ejecutar la actualización
+
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(this, "Producto añadido al historial de compras.", "Éxito", JOptionPane.INFORMATION_MESSAGE);

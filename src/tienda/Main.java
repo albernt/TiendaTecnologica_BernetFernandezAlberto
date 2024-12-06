@@ -11,33 +11,33 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class Main {
-    private static final String DB_PATH = "tienda.db"; // Ruta de la base de datos
+    private static final String DB_PATH = "tienda.db"; // Ruta de la bd
 
     public static void main(String[] args) {
-        // Crear base de datos y tablas al inicio
+        // Llamamos a metodo de creacion de la base de datos
         crearBaseDeDatos();
 
-        // Insertar productos desde el archivo JSON
+        // Y al metodo para insertar la info del json a la bd
         insertarProductosDesdeJSON();
 
         // Crear y mostrar la ventana
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new Tienda(); // Asumiendo que tienes una clase llamada Tienda para la ventana
+            JFrame frame = new Tienda();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
         });
     }
 
-    // Método para crear la base de datos y las tablas
+
     private static void crearBaseDeDatos() {
-        String url = "jdbc:sqlite:" + DB_PATH; // Ruta de la base de datos SQLite
+        String url = "jdbc:sqlite:" + DB_PATH;
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 System.out.println("Conexión exitosa a la base de datos.");
                 Statement stmt = conn.createStatement();
 
-                // Crear tabla de categorías
+
                 String sqlCategorias = """
                         CREATE TABLE IF NOT EXISTS categorias (
                             id INTEGER PRIMARY KEY,
@@ -46,7 +46,7 @@ public class Main {
                         """;
                 stmt.execute(sqlCategorias);
 
-                // Crear tabla de productos
+
                 String sqlProductos = """
                         CREATE TABLE IF NOT EXISTS productos (
                             id INTEGER PRIMARY KEY,
@@ -59,7 +59,7 @@ public class Main {
                         """;
                 stmt.execute(sqlProductos);
 
-                // Crear tabla de usuarios
+
                 String sqlUsuarios = """
                         CREATE TABLE IF NOT EXISTS usuarios (
                             id INTEGER PRIMARY KEY,
@@ -70,7 +70,7 @@ public class Main {
                         """;
                 stmt.execute(sqlUsuarios);
 
-                // Crear tabla de historial de compras
+
                 String sqlHistorialCompras = """
                         CREATE TABLE IF NOT EXISTS historial_compras (
                             id INTEGER PRIMARY KEY,
@@ -84,7 +84,7 @@ public class Main {
                         """;
                 stmt.execute(sqlHistorialCompras);
 
-                // Crear tabla de características
+
                 String sqlCaracteristicas = """
                         CREATE TABLE IF NOT EXISTS caracteristicas (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -96,7 +96,7 @@ public class Main {
                         """;
                 stmt.execute(sqlCaracteristicas);
 
-                // Crear tabla de imágenes
+
                 String sqlImagenes = """
                         CREATE TABLE IF NOT EXISTS imagenes (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -107,7 +107,7 @@ public class Main {
                         """;
                 stmt.execute(sqlImagenes);
 
-                // Crear tabla de inventario
+
                 String sqlInventario = """
                         CREATE TABLE IF NOT EXISTS inventario (
                             producto_id INTEGER PRIMARY KEY,
@@ -125,14 +125,15 @@ public class Main {
         }
     }
 
-    // Insertar productos desde un archivo JSON con datos adicionales
+
     public static void insertarProductosDesdeJSON() {
         String url = "jdbc:sqlite:tienda.db";
 
         try (Connection conn = DriverManager.getConnection(url)) {
             conn.setAutoCommit(false);
 
-            // Cargar el archivo JSON como recurso
+            // Cargamos el archivo JSON como recurso
+
             InputStream inputStream = Main.class.getResourceAsStream("/tienda/tienda.json");
             if (inputStream == null) {
                 throw new FileNotFoundException("No se encontró el archivo tienda.json en el directorio esperado.");
@@ -143,7 +144,7 @@ public class Main {
             JSONObject tienda = (JSONObject) jsonObject.get("tienda");
             JSONArray categorias = (JSONArray) tienda.get("categorias");
 
-            // Inserción de categorías
+
             String sqlInsertCategoria = "INSERT INTO categorias (id, nombre) VALUES (?, ?)";
             try (PreparedStatement stmtCategoria = conn.prepareStatement(sqlInsertCategoria)) {
                 for (Object catObj : categorias) {
@@ -157,7 +158,7 @@ public class Main {
                 }
             }
 
-            // Inserción de productos y datos relacionados
+
             String sqlInsertProducto = "INSERT INTO productos (id, nombre, precio, descripcion, categoria_id) VALUES (?, ?, ?, ?, ?)";
             String sqlInsertCaracteristica = "INSERT INTO caracteristicas (producto_id, clave, valor) VALUES (?, ?, ?)";
             String sqlInsertImagen = "INSERT INTO imagenes (producto_id, imagen) VALUES (?, ?)";
@@ -181,7 +182,7 @@ public class Main {
                         String descripcion = (String) producto.get("descripcion");
                         int categoriaId = ((Long) categoria.get("id")).intValue();
 
-                        // Inserción del producto
+
                         stmtProducto.setInt(1, productoId);
                         stmtProducto.setString(2, nombre);
                         stmtProducto.setDouble(3, precio);
@@ -189,7 +190,7 @@ public class Main {
                         stmtProducto.setInt(5, categoriaId);
                         stmtProducto.executeUpdate();
 
-                        // Inserción de características
+
                         JSONObject caracteristicas = (JSONObject) producto.get("caracteristicas");
                         if (caracteristicas != null) {
                             for (Object clave : caracteristicas.keySet()) {
@@ -200,7 +201,7 @@ public class Main {
                             }
                         }
 
-                        // Inserción de imágenes
+
                         JSONArray imagenes = (JSONArray) producto.get("imagenes");
                         if (imagenes != null) {
                             for (Object img : imagenes) {
@@ -210,7 +211,7 @@ public class Main {
                             }
                         }
 
-                        // Inserción de inventario
+
                         Long inventario = (Long) producto.get("inventario");
                         if (inventario != null) {
                             stmtInventario.setInt(1, productoId);
@@ -223,7 +224,7 @@ public class Main {
 
 
 
-            conn.commit(); // Confirmar transacción
+            conn.commit();
             System.out.println("Datos insertados correctamente desde el archivo JSON.");
         } catch (IOException | ParseException e) {
             System.out.println("Error al leer el archivo JSON: " + e.getMessage());

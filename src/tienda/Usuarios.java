@@ -22,7 +22,7 @@ public class Usuarios extends JFrame {
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null);
 
-        // Logo de la tienda
+        // Logo
         JLabel logoLabel = new JLabel();
         logoLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -50,7 +50,7 @@ public class Usuarios extends JFrame {
 
         add(logoLabel);
 
-        // Botones estilizados
+        // Botones
         int buttonWidth = 150;
         int buttonHeight = 40;
         int buttonSpacing = 10;
@@ -90,17 +90,17 @@ public class Usuarios extends JFrame {
         );
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
 
-// Acción para el botón Usuarios
+
         usuariosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Crear una nueva instancia de la clase Usuarios
+
                 Usuarios usuariosFrame = new Usuarios();
 
-                // Hacerla visible
+
                 usuariosFrame.setVisible(true);
 
-                // Cerrar la ventana actual (la de Tienda)
+
                 Usuarios.this.dispose();
             }
         });
@@ -122,7 +122,7 @@ public class Usuarios extends JFrame {
         homeButton.addActionListener(e -> {
             Tienda tienda = new Tienda();
             tienda.setVisible(true);
-            dispose(); // Cerrar la ventana actual
+            dispose();
         });
 
         add(homeButton);
@@ -138,24 +138,21 @@ public class Usuarios extends JFrame {
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel);
 
-        // Cargar imágenes de perfil y añadir MouseListener
+        // Cargamos las imagenes de los perfiles y agregamos el MouseListener
         JLabel perfil1Label = crearImagenPerfil("/tienda/perfil1.jpeg", 1);
-        perfil1Label.setBounds(windowWidth / 2 - 250, windowHeight / 2 - 100, 200, 200);  // Ajuste hacia la izquierda
+        perfil1Label.setBounds(windowWidth / 2 - 250, windowHeight / 2 - 100, 200, 200);
         add(perfil1Label);
 
         JLabel perfil2Label = crearImagenPerfil("/tienda/perfil2.jpeg", 2);
-        perfil2Label.setBounds(windowWidth / 2 + 50, windowHeight / 2 - 100, 200, 200);  // Ajuste hacia la derecha
+        perfil2Label.setBounds(windowWidth / 2 + 50, windowHeight / 2 - 100, 200, 200);
         add(perfil2Label);
 
 
-
-
-        // Fuerza la actualización del contenedor principal
         revalidate();
         repaint();
     }
 
-    // Método para crear los botones con efectos
+
     private JButton crearBotonConEfectos(String texto, Color fondo, Color textoColor, Color colorHover, Color colorPresionado) {
         JButton boton = new JButton(texto);
         boton.setBackground(fondo);
@@ -191,7 +188,7 @@ public class Usuarios extends JFrame {
         perfilLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                // Cargar y mostrar el historial de compras del usuario
+
                 String historial = obtenerHistorialCompras(userId);
                 JOptionPane.showMessageDialog(null, historial, "Historial de Compras", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -201,6 +198,8 @@ public class Usuarios extends JFrame {
     }
 
 
+
+    //Inner join para sacar el nombre del producto usando el id del historial
     private String obtenerHistorialCompras(int userId) {
         String historial = "No se encontró historial de compras.";
         String query = "SELECT p.nombre "
@@ -211,15 +210,15 @@ public class Usuarios extends JFrame {
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, userId);  // Establece el ID del usuario
+            stmt.setInt(1, userId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 StringBuilder sb = new StringBuilder();
                 while (rs.next()) {
-                    // Obtener el nombre del producto
+
                     sb.append("Producto: ").append(rs.getString("nombre")).append("\n");
                 }
-                // Si se encuentra algún producto, lo muestra, si no, deja el mensaje predeterminado
+
                 historial = sb.length() > 0 ? sb.toString() : historial;
             }
         } catch (SQLException e) {

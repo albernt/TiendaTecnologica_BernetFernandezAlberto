@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 public class Categorias extends JFrame {
 
     public Categorias() {
-        setTitle("Mi tienda to guapa");
+        setTitle("Mi tienda tecnologica");
 
         int windowWidth = 1500;
         int windowHeight = 950;
@@ -22,11 +22,11 @@ public class Categorias extends JFrame {
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null);
 
-        // Logo de la tienda
+        // Logo
         JLabel logoLabel = new JLabel();
         logoLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-        // Cargar la imagen del logo
+
         ImageIcon logoIcon = null;
         try {
             logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png")); // Ruta relativa al paquete
@@ -37,7 +37,7 @@ public class Categorias extends JFrame {
         }
 
         if (logoIcon != null) {
-            logoLabel.setIcon(logoIcon); // Asignar el icono al JLabel
+            logoLabel.setIcon(logoIcon);
         } else {
             logoLabel.setText("Logo no encontrado");
             logoLabel.setForeground(Color.RED);
@@ -50,7 +50,7 @@ public class Categorias extends JFrame {
 
         add(logoLabel);
 
-        // Botones estilizados
+        // Botones
         int buttonWidth = 150;
         int buttonHeight = 40;
         int buttonSpacing = 10;
@@ -63,7 +63,7 @@ public class Categorias extends JFrame {
                 Color.LIGHT_GRAY  // Color al presionar
         );
         productosButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20), 20, buttonWidth, buttonHeight);
-        // Acción para el botón Productos
+
         productosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,17 +90,17 @@ public class Categorias extends JFrame {
         );
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
 
-// Acción para el botón Usuarios
+
         usuariosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Crear una nueva instancia de la clase Usuarios
+
                 Usuarios usuariosFrame = new Usuarios();
 
-                // Hacerla visible
+
                 usuariosFrame.setVisible(true);
 
-                // Cerrar la ventana actual (la de Tienda)
+
                 Categorias.this.dispose();
             }
         });

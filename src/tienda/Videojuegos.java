@@ -139,10 +139,10 @@ public class Videojuegos extends JFrame {
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel);
 
-        // Llamar al método para cargar los productos de videojuegos
+
         obtenerProductos("Videojuegos");
 
-        // Fuerza la actualización del contenedor principal
+
         revalidate();
         repaint();
     }
@@ -170,38 +170,37 @@ public class Videojuegos extends JFrame {
         return boton;
     }
 
-    // Método para obtener los productos de la categoría "Videojuegos" desde la base de datos
-    // Método para obtener los productos de la categoría "Videojuegos" desde la base de datos
+
     private void obtenerProductos(String categoria) {
-        // Cambiar a 'Videojuegos' en lugar de una categoría dinámica, si así lo deseas
+
         String sql = "SELECT p.id, p.nombre, p.precio FROM productos p "
                 + "JOIN categorias c ON p.categoria_id = c.id "
                 + "WHERE c.nombre = ?";
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Asumimos que la categoría es "Videojuegos"
+
             stmt.setString(1, "Videojuegos");
             ResultSet rs = stmt.executeQuery();
 
-            // Panel contenedor para los productos
+
             JPanel contenedorProductos = new JPanel();
-            contenedorProductos.setLayout(new GridLayout(0, 3, 20, 20)); // Layout con filas automáticas y 3 columnas
+            contenedorProductos.setLayout(new GridLayout(0, 3, 20, 20));
             contenedorProductos.setBackground(Color.BLACK);
             contenedorProductos.setPreferredSize(new Dimension(1200, 800));
 
-            // Recorrer los resultados y crear un panel para cada producto
+
             while (rs.next()) {
                 String nombreProducto = rs.getString("nombre");
                 double precioProducto = rs.getDouble("precio");
                 int idProducto = rs.getInt("id");
 
-                // Crear panel para el producto con fondo blanco y bordes
+
                 JPanel productoPanel = new JPanel();
                 productoPanel.setBackground(Color.WHITE); // Fondo blanco
-                productoPanel.setBorder(new LineBorder(Color.BLACK, 2)); // Borde negro
+                productoPanel.setBorder(new LineBorder(Color.BLACK, 2));
                 productoPanel.setLayout(new BorderLayout());
-                productoPanel.setPreferredSize(new Dimension(200, 200)); // Hacerlo cuadrado
+                productoPanel.setPreferredSize(new Dimension(200, 200));
 
                 JLabel productoLabel = new JLabel("<html><b>" + nombreProducto + "</b><br/>Precio: $" + precioProducto + "</html>", SwingConstants.CENTER);
                 productoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -209,7 +208,7 @@ public class Videojuegos extends JFrame {
 
                 productoPanel.add(productoLabel, BorderLayout.CENTER);
 
-                // Botón para añadir al historial de compras
+
                 JButton compraButton = new JButton("Comprar");
                 compraButton.setBackground(Color.GREEN);
                 compraButton.setForeground(Color.WHITE);
@@ -217,7 +216,7 @@ public class Videojuegos extends JFrame {
                 compraButton.setFocusPainted(false);
                 compraButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-                // Acción de añadir al historial de compras
+
                 compraButton.addActionListener(e -> {
                     añadirAlHistorial(idProducto);
                 });
@@ -227,15 +226,15 @@ public class Videojuegos extends JFrame {
                 contenedorProductos.add(productoPanel);
             }
 
-            // Crear un JScrollPane para agregar los productos si son muchos
+
             JScrollPane scrollPane = new JScrollPane(contenedorProductos);
             scrollPane.setBounds(0, 250, getWidth(), getHeight() - 350);
             add(scrollPane);
 
             // Agregar el MouseWheelListener para hacer que la pantalla baje más rápido
             scrollPane.addMouseWheelListener(e -> {
-                int scrollAmount = e.getUnitsToScroll();  // Obtener la cantidad de desplazamiento
-                int adjustedAmount = scrollAmount * 3;    // Ajustar la velocidad multiplicando (3 es el factor de velocidad)
+                int scrollAmount = e.getUnitsToScroll();
+                int adjustedAmount = scrollAmount * 3;    // Ajuste la velocidad
 
                 JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
                 int newValue = verticalScrollBar.getValue() + adjustedAmount;
@@ -256,7 +255,7 @@ public class Videojuegos extends JFrame {
 
     // Método para añadir al historial de compras
     private void añadirAlHistorial(int idProducto) {
-        // Mostrar un cuadro de diálogo para que el usuario elija su ID (1 o 2)
+
         String[] opciones = {"1", "2"};
         String idUsuario = (String) JOptionPane.showInputDialog(
                 this,
@@ -281,12 +280,12 @@ public class Videojuegos extends JFrame {
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Establecer los parámetros en la consulta
+            // parámetros en la consulta
             stmt.setInt(1, idProducto);
             stmt.setInt(2, usuarioId);
             stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 
-            // Ejecutar la actualización
+
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(this, "Producto añadido al historial de compras.", "Éxito", JOptionPane.INFORMATION_MESSAGE);

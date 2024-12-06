@@ -22,14 +22,14 @@ public class Tienda extends JFrame {
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null);
 
-        // Logo de la tienda
+        // Logo
         JLabel logoLabel = new JLabel();
         logoLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-        // Cargar la imagen del logo
+
         ImageIcon logoIcon = null;
         try {
-            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png")); // Ruta relativa al paquete
+            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png"));
             Image scaledImage = logoIcon.getImage().getScaledInstance(250, 180, Image.SCALE_SMOOTH);
             logoIcon = new ImageIcon(scaledImage);
         } catch (NullPointerException e) {
@@ -37,7 +37,7 @@ public class Tienda extends JFrame {
         }
 
         if (logoIcon != null) {
-            logoLabel.setIcon(logoIcon); // Asignar el icono al JLabel
+            logoLabel.setIcon(logoIcon);
         } else {
             logoLabel.setText("Logo no encontrado");
             logoLabel.setForeground(Color.RED);
@@ -50,7 +50,7 @@ public class Tienda extends JFrame {
 
         add(logoLabel);
 
-        // Botones estilizados
+        // Botones
         int buttonWidth = 150;
         int buttonHeight = 40;
         int buttonSpacing = 10;
@@ -59,11 +59,11 @@ public class Tienda extends JFrame {
                 "Productos",
                 Color.DARK_GRAY,
                 Color.WHITE,
-                Color.LIGHT_GRAY, // Color al pasar el ratón
-                Color.LIGHT_GRAY  // Color al presionar
+                Color.LIGHT_GRAY,
+                Color.LIGHT_GRAY
         );
         productosButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20), 20, buttonWidth, buttonHeight);
-        // Acción para el botón Productos
+
         productosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,7 +90,7 @@ public class Tienda extends JFrame {
         );
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
 
-// Acción para el botón Usuarios
+
         usuariosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,7 +115,7 @@ public class Tienda extends JFrame {
 
 
 
-        // Bordeado del banner: solo arriba e izquierda
+
         bannerLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(5, 5, 0, 0, Color.decode("#FFFFFF")), // Borde solo arriba e izquierda
                 BorderFactory.createEmptyBorder(10, 10, 10, 10) // Márgenes internos opcionales
@@ -125,21 +125,21 @@ public class Tienda extends JFrame {
 
 
 
-        // Cargar la imagen del banner
+
         ImageIcon bannerIcon = null;
         try {
             bannerIcon = new ImageIcon(getClass().getResource("/tienda/Banner.png"));
             int originalWidth = bannerIcon.getIconWidth();
             int originalHeight = bannerIcon.getIconHeight();
 
-            // Calcular la nueva altura manteniendo la proporción
+
             int newHeight = (int) ((double) windowWidth / originalWidth * originalHeight);
 
-            // Escalar la imagen
+
             Image scaledImage = bannerIcon.getImage().getScaledInstance(windowWidth, newHeight, Image.SCALE_SMOOTH);
             bannerIcon = new ImageIcon(scaledImage);
 
-            // Posicionar el banner justo encima del footer
+
             bannerLabel.setBounds(0, windowHeight - newHeight - 100, windowWidth, newHeight);
         } catch (NullPointerException e) {
             System.err.println("No se pudo cargar el banner. Verifica la ruta y la ubicación del archivo.");
@@ -169,7 +169,7 @@ public class Tienda extends JFrame {
 
 
 
-        // Fuerza la actualización del contenedor principal
+
         revalidate();
         repaint();
     }
@@ -183,14 +183,14 @@ public class Tienda extends JFrame {
         boton.setBorder(new LineBorder(Color.green, 2, true));
         boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // ChangeListener para modificar colores según el estado del boton
+
         boton.getModel().addChangeListener(e -> {
             if (boton.getModel().isPressed()) {
-                boton.setBackground(colorPresionado); // Cambiar color al presionar
+                boton.setBackground(colorPresionado);
             } else if (boton.getModel().isRollover()) {
-                boton.setBackground(colorHover); // Cambiar color al pasar el ratón
+                boton.setBackground(colorHover);
             } else {
-                boton.setBackground(fondo); // Restaurar color original
+                boton.setBackground(fondo);
             }
         });
 
