@@ -89,7 +89,24 @@ public class Tienda extends JFrame {
                 Color.LIGHT_GRAY
         );
         usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
+
+// Acción para el botón Usuarios
+        usuariosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Crear una nueva instancia de la clase Usuarios
+                Usuarios usuariosFrame = new Usuarios();
+
+                // Hacerla visible
+                usuariosFrame.setVisible(true);
+
+                // Cerrar la ventana actual (la de Tienda)
+                Tienda.this.dispose();
+            }
+        });
+
         add(usuariosButton);
+
 
         // Banner
         JLabel bannerLabel = new JLabel();

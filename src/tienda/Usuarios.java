@@ -3,13 +3,13 @@ package tienda;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.sql.*;
 
-public class Categorias extends JFrame {
+public class Usuarios extends JFrame {
 
-    public Categorias() {
-        setTitle("Mi tienda to guapa");
+    public Usuarios() {
+        setTitle("Gestión de Usuarios");
 
         int windowWidth = 1500;
         int windowHeight = 950;
@@ -29,7 +29,7 @@ public class Categorias extends JFrame {
         // Cargar la imagen del logo
         ImageIcon logoIcon = null;
         try {
-            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png")); // Ruta relativa al paquete
+            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png"));
             Image scaledImage = logoIcon.getImage().getScaledInstance(250, 180, Image.SCALE_SMOOTH);
             logoIcon = new ImageIcon(scaledImage);
         } catch (NullPointerException e) {
@@ -37,7 +37,7 @@ public class Categorias extends JFrame {
         }
 
         if (logoIcon != null) {
-            logoLabel.setIcon(logoIcon); // Asignar el icono al JLabel
+            logoLabel.setIcon(logoIcon);
         } else {
             logoLabel.setText("Logo no encontrado");
             logoLabel.setForeground(Color.RED);
@@ -74,7 +74,7 @@ public class Categorias extends JFrame {
                 categoriasFrame.setVisible(true);
 
 
-                Categorias.this.dispose();
+                Usuarios.this.dispose();
             }
         });
 
@@ -101,58 +101,31 @@ public class Categorias extends JFrame {
                 usuariosFrame.setVisible(true);
 
                 // Cerrar la ventana actual (la de Tienda)
-                Categorias.this.dispose();
+                Usuarios.this.dispose();
             }
         });
 
         add(usuariosButton);
 
+        // Botón home
         ImageIcon homeIcon = new ImageIcon(getClass().getResource("/tienda/home.png"));
-
-        Image scaledHomeImage = homeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Tamaño más pequeño
+        Image scaledHomeImage = homeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         homeIcon = new ImageIcon(scaledHomeImage);
-
         JButton homeButton = new JButton(homeIcon);
-
-        homeButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20) - 40, 25, 30, 30);
+        homeButton.setBounds(windowWidth - (2 * 150 + 10 + 20) - 40, 25, 30, 30);
 
         homeButton.setBorder(null);
         homeButton.setContentAreaFilled(false);
         homeButton.setFocusPainted(false);
         homeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Tienda tienda = new Tienda();  // Crea una nueva instancia de la tienda
-                tienda.setVisible(true); // Mostrar la ventana Tienda
-                dispose(); // Cerrar la ventana actual
-            }
+        homeButton.addActionListener(e -> {
+            Tienda tienda = new Tienda();
+            tienda.setVisible(true);
+            dispose(); // Cerrar la ventana actual
         });
 
         add(homeButton);
-
-        // Añadir las imágenes centradas y con hover
-        JLabel videojuegosLabel = crearImagenConHover("/tienda/videojuegos.png", windowWidth / 4, windowHeight / 2);
-        videojuegosLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Videojuegos videojuegos = new Videojuegos();
-                videojuegos.setVisible(true);
-                dispose();
-            }
-        });
-
-        JLabel electronicaLabel = crearImagenConHover("/tienda/electronica.png", 3 * windowWidth / 4, windowHeight / 2);
-        electronicaLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Electronica electronica = new Electronica();
-                electronica.setVisible(true);
-                dispose();
-            }
-        });
-
-        add(videojuegosLabel);
-        add(electronicaLabel);
 
         // Footer
         JPanel footerPanel = new JPanel();
@@ -165,40 +138,24 @@ public class Categorias extends JFrame {
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel);
 
+        // Cargar imágenes de perfil y añadir MouseListener
+        JLabel perfil1Label = crearImagenPerfil("/tienda/perfil1.jpeg", 1);
+        perfil1Label.setBounds(windowWidth / 2 - 250, windowHeight / 2 - 100, 200, 200);  // Ajuste hacia la izquierda
+        add(perfil1Label);
+
+        JLabel perfil2Label = crearImagenPerfil("/tienda/perfil2.jpeg", 2);
+        perfil2Label.setBounds(windowWidth / 2 + 50, windowHeight / 2 - 100, 200, 200);  // Ajuste hacia la derecha
+        add(perfil2Label);
+
+
+
+
         // Fuerza la actualización del contenedor principal
         revalidate();
         repaint();
     }
 
-    // Método para crear las imágenes con hover
-    private JLabel crearImagenConHover(String path, int x, int y) {
-        JLabel label = new JLabel();
-        try {
-            ImageIcon icon = new ImageIcon(getClass().getResource(path));
-            Image image = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH); // Redimensionar
-            label.setIcon(new ImageIcon(image));
-        } catch (Exception e) {
-            System.err.println("Error al cargar la imagen: " + path);
-        }
-
-        label.setBounds(x - 125, y - 125, 250, 250); // Centrar la imagen
-
-        label.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambiar el cursor a manita al pasar el ratón
-
-        label.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                label.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cursor como manita al pasar el ratón
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Cursor por defecto al salir
-            }
-        });
-
-        return label;
-    }
-
-    // Método para crear botones estilizados
+    // Método para crear los botones con efectos
     private JButton crearBotonConEfectos(String texto, Color fondo, Color textoColor, Color colorHover, Color colorPresionado) {
         JButton boton = new JButton(texto);
         boton.setBackground(fondo);
@@ -208,17 +165,72 @@ public class Categorias extends JFrame {
         boton.setBorder(new LineBorder(Color.green, 2, true));
         boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // ChangeListener para modificar colores según el estado del boton
         boton.getModel().addChangeListener(e -> {
             if (boton.getModel().isPressed()) {
-                boton.setBackground(colorPresionado); // Cambiar color al presionar
+                boton.setBackground(colorPresionado);
             } else if (boton.getModel().isRollover()) {
-                boton.setBackground(colorHover); // Cambiar color al pasar el ratón
+                boton.setBackground(colorHover);
             } else {
-                boton.setBackground(fondo); // Restaurar color original
+                boton.setBackground(fondo);
             }
         });
 
         return boton;
+    }
+
+    // Método para crear la imagen del perfil y añadir el MouseListener
+    private JLabel crearImagenPerfil(String imagePath, int userId) {
+        JLabel perfilLabel = new JLabel();
+        ImageIcon perfilIcon = new ImageIcon(getClass().getResource(imagePath));
+        Image perfilImage = perfilIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        perfilIcon = new ImageIcon(perfilImage);
+        perfilLabel.setIcon(perfilIcon);
+
+        perfilLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        perfilLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Cargar y mostrar el historial de compras del usuario
+                String historial = obtenerHistorialCompras(userId);
+                JOptionPane.showMessageDialog(null, historial, "Historial de Compras", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        return perfilLabel;
+    }
+
+    // Método para obtener el historial de compras de un usuario
+    private String obtenerHistorialCompras(int userId) {
+        String historial = "No se encontró historial de compras.";
+        String query = "SELECT producto_id FROM historial_compras WHERE usuario_id = ?";
+
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);  // Establece el ID de usuario para la consulta
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                StringBuilder sb = new StringBuilder();
+                while (rs.next()) {
+                    // Cambié "compra" por "producto_id" ya que esa es la columna que mencionas
+                    sb.append("Producto ID: ").append(rs.getString("producto_id")).append("\n");
+                }
+                // Si hay resultados, los muestra, si no, permanece el mensaje predeterminado
+                historial = sb.length() > 0 ? sb.toString() : historial;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return historial;
+    }
+
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Usuarios usuariosFrame = new Usuarios();
+            usuariosFrame.setVisible(true);
+        });
     }
 }

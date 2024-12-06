@@ -3,6 +3,8 @@ package tienda;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class Videojuegos extends JFrame {
@@ -49,18 +51,37 @@ public class Videojuegos extends JFrame {
 
         add(logoLabel);
 
-        // Botón productos
+        // Botones estilizados
+        int buttonWidth = 150;
+        int buttonHeight = 40;
+        int buttonSpacing = 10;
+
         JButton productosButton = crearBotonConEfectos(
                 "Productos",
                 Color.DARK_GRAY,
                 Color.WHITE,
-                Color.LIGHT_GRAY,
-                Color.LIGHT_GRAY
+                Color.LIGHT_GRAY, // Color al pasar el ratón
+                Color.LIGHT_GRAY  // Color al presionar
         );
-        productosButton.setBounds(windowWidth - (2 * 150 + 10 + 20), 20, 150, 40);
+        productosButton.setBounds(windowWidth - (2 * buttonWidth + buttonSpacing + 20), 20, buttonWidth, buttonHeight);
+        // Acción para el botón Productos
+        productosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Categorias categoriasFrame = new Categorias();
+
+
+                categoriasFrame.setVisible(true);
+
+
+                Videojuegos.this.dispose();
+            }
+        });
+
+
         add(productosButton);
 
-        // Botón usuarios
         JButton usuariosButton = crearBotonConEfectos(
                 "Usuarios",
                 Color.DARK_GRAY,
@@ -68,7 +89,23 @@ public class Videojuegos extends JFrame {
                 Color.LIGHT_GRAY,
                 Color.LIGHT_GRAY
         );
-        usuariosButton.setBounds(windowWidth - (150 + 20), 20, 150, 40);
+        usuariosButton.setBounds(windowWidth - (buttonWidth + 20), 20, buttonWidth, buttonHeight);
+
+// Acción para el botón Usuarios
+        usuariosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Crear una nueva instancia de la clase Usuarios
+                Usuarios usuariosFrame = new Usuarios();
+
+                // Hacerla visible
+                usuariosFrame.setVisible(true);
+
+                // Cerrar la ventana actual (la de Tienda)
+                Videojuegos.this.dispose();
+            }
+        });
+
         add(usuariosButton);
 
         // Botón home
