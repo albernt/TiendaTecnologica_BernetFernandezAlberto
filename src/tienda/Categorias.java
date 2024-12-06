@@ -29,7 +29,7 @@ public class Categorias extends JFrame {
 
         ImageIcon logoIcon = null;
         try {
-            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png")); // Ruta relativa al paquete
+            logoIcon = new ImageIcon(getClass().getResource("images/logo.png"));
             Image scaledImage = logoIcon.getImage().getScaledInstance(250, 180, Image.SCALE_SMOOTH);
             logoIcon = new ImageIcon(scaledImage);
         } catch (NullPointerException e) {
@@ -107,7 +107,7 @@ public class Categorias extends JFrame {
 
         add(usuariosButton);
 
-        ImageIcon homeIcon = new ImageIcon(getClass().getResource("/tienda/home.png"));
+        ImageIcon homeIcon = new ImageIcon(getClass().getResource("images/home.png"));
 
         Image scaledHomeImage = homeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Tamaño más pequeño
         homeIcon = new ImageIcon(scaledHomeImage);
@@ -133,7 +133,7 @@ public class Categorias extends JFrame {
         add(homeButton);
 
         // Añadir las imágenes centradas y con hover
-        JLabel videojuegosLabel = crearImagenConHover("/tienda/videojuegos.png", windowWidth / 4, windowHeight / 2);
+        JLabel videojuegosLabel = crearImagenConHover("images/videojuegos.png", windowWidth / 4, windowHeight / 2);
         videojuegosLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Videojuegos videojuegos = new Videojuegos();
@@ -142,7 +142,7 @@ public class Categorias extends JFrame {
             }
         });
 
-        JLabel electronicaLabel = crearImagenConHover("/tienda/electronica.png", 3 * windowWidth / 4, windowHeight / 2);
+        JLabel electronicaLabel = crearImagenConHover("images/electronica.png", 3 * windowWidth / 4, windowHeight / 2);
         electronicaLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Electronica electronica = new Electronica();

@@ -29,7 +29,7 @@ public class Tienda extends JFrame {
 
         ImageIcon logoIcon = null;
         try {
-            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png"));
+            logoIcon = new ImageIcon(getClass().getResource("images/logo.png"));
             Image scaledImage = logoIcon.getImage().getScaledInstance(250, 180, Image.SCALE_SMOOTH);
             logoIcon = new ImageIcon(scaledImage);
         } catch (NullPointerException e) {
@@ -128,7 +128,7 @@ public class Tienda extends JFrame {
 
         ImageIcon bannerIcon = null;
         try {
-            bannerIcon = new ImageIcon(getClass().getResource("/tienda/Banner.png"));
+            bannerIcon = new ImageIcon(getClass().getResource("images/Banner.png"));
             int originalWidth = bannerIcon.getIconWidth();
             int originalHeight = bannerIcon.getIconHeight();
 

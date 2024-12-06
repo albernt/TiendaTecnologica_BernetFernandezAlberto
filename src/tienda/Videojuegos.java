@@ -30,7 +30,7 @@ public class Videojuegos extends JFrame {
         // Cargar la imagen del logo
         ImageIcon logoIcon = null;
         try {
-            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png"));
+            logoIcon = new ImageIcon(getClass().getResource("images/logo.png"));
             Image scaledImage = logoIcon.getImage().getScaledInstance(250, 180, Image.SCALE_SMOOTH);
             logoIcon = new ImageIcon(scaledImage);
         } catch (NullPointerException e) {
@@ -109,7 +109,7 @@ public class Videojuegos extends JFrame {
         add(usuariosButton);
 
         // Botón home
-        ImageIcon homeIcon = new ImageIcon(getClass().getResource("/tienda/home.png"));
+        ImageIcon homeIcon = new ImageIcon(getClass().getResource("images/home.png"));
         Image scaledHomeImage = homeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         homeIcon = new ImageIcon(scaledHomeImage);
         JButton homeButton = new JButton(homeIcon);

@@ -29,7 +29,7 @@ public class Usuarios extends JFrame {
         // Cargar la imagen del logo
         ImageIcon logoIcon = null;
         try {
-            logoIcon = new ImageIcon(getClass().getResource("/tienda/logo.png"));
+            logoIcon = new ImageIcon(getClass().getResource("images/logo.png"));
             Image scaledImage = logoIcon.getImage().getScaledInstance(250, 180, Image.SCALE_SMOOTH);
             logoIcon = new ImageIcon(scaledImage);
         } catch (NullPointerException e) {
@@ -108,7 +108,7 @@ public class Usuarios extends JFrame {
         add(usuariosButton);
 
         // Botón home
-        ImageIcon homeIcon = new ImageIcon(getClass().getResource("/tienda/home.png"));
+        ImageIcon homeIcon = new ImageIcon(getClass().getResource("images/home.png"));
         Image scaledHomeImage = homeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         homeIcon = new ImageIcon(scaledHomeImage);
         JButton homeButton = new JButton(homeIcon);
@@ -139,11 +139,11 @@ public class Usuarios extends JFrame {
         footerPanel.add(footerLabel);
 
         // Cargamos las imagenes de los perfiles y agregamos el MouseListener
-        JLabel perfil1Label = crearImagenPerfil("/tienda/perfil1.jpeg", 1);
+        JLabel perfil1Label = crearImagenPerfil("images/perfil1.jpeg", 1);
         perfil1Label.setBounds(windowWidth / 2 - 250, windowHeight / 2 - 100, 200, 200);
         add(perfil1Label);
 
-        JLabel perfil2Label = crearImagenPerfil("/tienda/perfil2.jpeg", 2);
+        JLabel perfil2Label = crearImagenPerfil("images/perfil2.jpeg", 2);
         perfil2Label.setBounds(windowWidth / 2 + 50, windowHeight / 2 - 100, 200, 200);
         add(perfil2Label);
 
