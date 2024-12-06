@@ -135,50 +135,51 @@ public class Electronica extends JFrame {
 
     // Método para obtener los productos de la categoría "Electrónica" desde la base de datos
     private void obtenerProductos(String categoria) {
-        String sql = "SELECT nombre, precio FROM productos WHERE categoria = ?";
+        String sql = "SELECT p.nombre, p.precio FROM productos p "
+                + "JOIN categorias c ON p.categoria_id = c.id "
+                + "WHERE c.nombre = ?";
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:tienda.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, categoria); // Establecer la categoría (Electrónica)
+            // Asumimos que la categoría es el nombre de la categoría, como "Electrónica"
+            stmt.setString(1, categoria);
             ResultSet rs = stmt.executeQuery();
 
             // Panel contenedor para los productos
             JPanel contenedorProductos = new JPanel();
-            contenedorProductos.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // Alineación centrada
-            contenedorProductos.setBackground(Color.BLACK); // Fondo negro para el contenedor
+            contenedorProductos.setLayout(new GridLayout(0, 3, 20, 20)); // Layout con filas automáticas y 3 columnas
+            contenedorProductos.setBackground(Color.BLACK);
+            contenedorProductos.setPreferredSize(new Dimension(1200, 800));
 
             // Recorrer los resultados y crear un panel para cada producto
             while (rs.next()) {
                 String nombreProducto = rs.getString("nombre");
                 double precioProducto = rs.getDouble("precio");
 
-                // Crear un JPanel para cada producto con borde blanco
+                // Crear panel para el producto con fondo blanco y bordes
                 JPanel productoPanel = new JPanel();
-                productoPanel.setBackground(Color.BLACK);
-                productoPanel.setBorder(new LineBorder(Color.WHITE, 2)); // Borde blanco
+                productoPanel.setBackground(Color.WHITE); // Fondo blanco
+                productoPanel.setBorder(new LineBorder(Color.BLACK, 2)); // Borde negro
                 productoPanel.setLayout(new BorderLayout());
+                productoPanel.setPreferredSize(new Dimension(200, 200)); // Hacerlo cuadrado
 
-                // Crear un JLabel con el nombre del producto y el precio
                 JLabel productoLabel = new JLabel("<html><b>" + nombreProducto + "</b><br/>Precio: $" + precioProducto + "</html>", SwingConstants.CENTER);
                 productoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-                productoLabel.setForeground(Color.WHITE);
+                productoLabel.setForeground(Color.BLACK);
 
                 productoPanel.add(productoLabel, BorderLayout.CENTER);
 
-                // Establecer tamaño cuadrado para cada panel
-                productoPanel.setPreferredSize(new Dimension(150, 150)); // Tamaño de cada panel
-
-                // Agregar el panel del producto al contenedor
                 contenedorProductos.add(productoPanel);
             }
 
-            // Agregar el contenedor de productos al JFrame
+            // Crear un JScrollPane para agregar los productos si son muchos
             JScrollPane scrollPane = new JScrollPane(contenedorProductos);
             scrollPane.setBounds(0, 250, getWidth(), getHeight() - 350);
             add(scrollPane);
 
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
